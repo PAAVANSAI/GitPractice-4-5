@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Git & GitHub: Complete Hands-On Guide</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f7fb;--fg:#1f2937;--head:#0b1220;--card:#fff;--line:#d9deea;--acc:#e8590c;--acc2:#1c64f2;--code:#0f172a;--codefg:#e2e8f0;--tip:#e7f5ec;--warn:#fff1e6;--side:#0b1220;--sidefg:#cbd5e1}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth;height:100%}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--fg:#d5dbe7;--head:#fff;--card:#131c30;--line:#27324a;--acc:#ff8a4c;--acc2:#7aa7ff;--code:#050a14;--tip:#10281b;--warn:#33200f;--side:#060b16}}
+:root[data-theme="dark"]{--bg:#0b1220;--fg:#d5dbe7;--head:#fff;--card:#131c30;--line:#27324a;--acc:#ff8a4c;--acc2:#7aa7ff;--code:#050a14;--tip:#10281b;--warn:#33200f;--side:#060b16}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+nav{position:fixed;top:0;left:0;bottom:0;width:270px;background:var(--side);padding:calc(18px + env(safe-area-inset-top,0px)) 14px 18px;overflow-y:auto}
+nav b{display:block;color:#fff;font-size:18px;margin:0 8px 12px}
+nav a{display:block;color:var(--sidefg);text-decoration:none;padding:6px 10px;border-radius:8px;font-size:14.5px}
+nav a:hover{background:#1e293b;color:#fff}
+main{margin-left:270px;max-width:none;padding:32px 48px 80px}
+.hero{background:linear-gradient(135deg,#0b1220,#1c3d8f);color:#fff;border-radius:18px;padding:34px 30px;margin-bottom:28px}
+.hero h1{margin:0 0 8px;font-size:2.1rem;line-height:1.2;color:#fff}.hero p{margin:0;color:#dbe4ff}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin:22px 0}
+h2{color:var(--head);font-size:1.7rem;font-weight:800;line-height:1.25;margin:0 0 14px;padding-left:14px;border-left:6px solid var(--acc)}
+h2 small{display:block;color:var(--acc);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
+h3{color:var(--head);font-weight:700;font-size:1.15rem;margin:22px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0}
+.tw{overflow-x:auto}
+th{background:var(--head);color:var(--card);text-align:left}
+th,td{padding:9px 12px;border:1px solid var(--line);vertical-align:top}
+pre{position:relative;background:var(--code);color:var(--codefg);padding:14px 16px;border-radius:12px;overflow-x:auto;font:14px/1.6 ui-monospace,Consolas,monospace;margin:10px 0}
+code{font-family:ui-monospace,Consolas,monospace;background:rgba(127,127,127,.18);padding:1px 6px;border-radius:5px;font-size:.9em}
+pre code{background:none;padding:0}
+.c{color:#7dd3a8}
+.cp{position:absolute;top:6px;right:6px;background:#334155;color:#fff;border:0;border-radius:6px;padding:3px 9px;font-size:12px;cursor:pointer}
+.tip,.warn{border-radius:12px;padding:10px 16px;margin:12px 0}
+.tip{background:var(--tip);border-left:5px solid #22a05a}.warn{background:var(--warn);border-left:5px solid var(--acc)}
+.try{border:2px dashed var(--acc2);border-radius:12px;padding:10px 16px;margin:14px 0}
+.try b{color:var(--acc2)}
+.flow{font-family:ui-monospace,Consolas,monospace;font-size:14px;text-align:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;white-space:pre}
+#tt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--acc);color:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer}
+@media(max-width:860px){nav{position:static;width:auto;display:flex;flex-wrap:wrap;gap:4px}nav b{width:100%}main{margin:0;padding:18px 14px 70px}section{padding:20px 16px}.hero h1{font-size:1.6rem}}
+#map{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.box{border:2px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-weight:700;color:var(--head);background:var(--card);transition:.2s}
+.box small{display:block;font-weight:400;color:var(--fg);font-size:12px}
+.box.from{border-color:var(--acc);background:var(--warn);transform:scale(1.05)}
+.box.to{border-color:var(--acc2);background:var(--tip);transform:scale(1.05)}
+#b-sh{margin:0 auto 10px;width:50%}
+.cb{margin:3px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--head);font:13px ui-monospace,Consolas,monospace;cursor:pointer}
+.cb.on{background:var(--acc);color:#fff;border-color:var(--acc)}.cb.d{border-color:#d33}
+#info{border-left:5px solid var(--acc2);background:var(--bg);padding:10px 14px;border-radius:8px;margin:10px 0;min-height:76px}
+@media(max-width:860px){#map{grid-template-columns:1fr 1fr}#b-sh{width:100%}}
+.box{position:relative;padding:18px 10px;font-size:1.05rem;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.box.from{background:rgba(232,89,12,.14);box-shadow:0 0 0 4px rgba(232,89,12,.2);animation:pu .6s}
+.box.to{background:rgba(28,100,242,.14);box-shadow:0 0 0 4px rgba(28,100,242,.2);animation:pu .6s}
+@keyframes pu{0%{transform:scale(.95)}60%{transform:scale(1.08)}100%{transform:scale(1.05)}}
+.badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;padding:2px 10px;border-radius:99px;color:#fff;white-space:nowrap}
+.bf{background:var(--acc)}.bt{background:var(--acc2)}
+.cb:hover{border-color:var(--acc)}#fw .cb{border-left:4px solid #22a05a}#bw .cb{border-left:4px solid var(--acc2)}#bw .cb.d{border-left-color:#d33}
+#info{padding:14px 18px;font-size:16px}
+.cmd{font:700 18px ui-monospace,Consolas,monospace;color:var(--head)}.route{margin:8px 0}
+.chip{display:inline-block;padding:3px 12px;border-radius:99px;font-weight:700;font-size:14px}
+.chip.f{background:rgba(232,89,12,.18);color:var(--acc)}.chip.t{background:rgba(28,100,242,.18);color:var(--acc2)}
+.why{margin-top:10px;font-size:15px;background:var(--tip);padding:8px 12px;border-radius:8px}
+#map{gap:26px;margin-top:24px}#b-sh{margin-top:6px}
+.box.from,.box.to{transform:scale(1.02)}
+.box.from{box-shadow:0 0 0 3px rgba(232,89,12,.22)}.box.to{box-shadow:0 0 0 3px rgba(28,100,242,.22)}
+@keyframes pu{0%{transform:scale(.97)}60%{transform:scale(1.04)}100%{transform:scale(1.02)}}
+@media(max-width:860px){#map{gap:22px}}
+
+/* ===== UI v2 ===== */
+body{background:radial-gradient(1200px 500px at 70% -10%,rgba(124,58,237,.10),transparent),var(--bg)}
+#bar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--acc),#facc15,var(--acc2));z-index:60}
+nav{border-right:1px solid #1e293b}
+nav b{font-size:20px;padding-bottom:6px}
+nav a{transition:.15s;border-left:3px solid transparent}
+nav a.active{background:rgba(232,89,12,.18);color:#fff;border-left-color:var(--acc);font-weight:700}
+nav a.done::after{content:" ✓";color:#4ade80;font-weight:800}
+nav a[href="#m19"]{background:linear-gradient(90deg,rgba(232,89,12,.35),transparent);color:#fff;font-weight:800;margin-top:6px}
+#q{width:100%;padding:9px 12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff;margin:4px 0 10px;font-size:14px}
+.pg{height:7px;background:#1e293b;border-radius:9px;margin:4px 4px 4px}
+.pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),#facc15);border-radius:9px;transition:.4s}
+#pgt{color:#94a3b8;font-size:12px;margin:0 4px 10px}
+.tools{display:flex;gap:6px;margin-bottom:10px}
+.tools button{flex:1;background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:6px;font-size:12px;cursor:pointer}
+.tools button:hover{background:#334155}
+.hero{background:linear-gradient(120deg,#0b1220,#1c3d8f,#7c3aed,#0b1220);background-size:300% 300%;animation:gm 16s ease infinite;box-shadow:0 20px 50px rgba(28,61,143,.35);padding:42px 36px}
+@keyframes gm{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.hero h1{font-size:2.6rem;letter-spacing:-.02em}
+.chips span{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:5px 14px;border-radius:99px;margin:14px 8px 0 0;font-weight:700;font-size:14px}
+.cta{display:inline-block;margin:18px 10px 0 0;background:var(--acc);color:#fff;padding:11px 22px;border-radius:99px;font-weight:800;text-decoration:none;box-shadow:0 6px 18px rgba(232,89,12,.4);transition:.2s}
+.cta:hover{transform:translateY(-2px)}.cta.ghost{background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none}
+section{position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px rgba(15,23,42,.06);transition:box-shadow .25s,transform .25s}
+section:hover{box-shadow:0 14px 40px rgba(15,23,42,.12)}
+section::after{content:attr(data-n);position:absolute;right:20px;top:-18px;font-size:120px;font-weight:900;color:var(--head);opacity:.045;pointer-events:none}
+h2 small{display:inline-block;background:var(--acc);color:#fff;padding:2px 12px;border-radius:99px;margin-bottom:6px;font-size:.72rem}
+h2{border-left:none;padding-left:0}
+h3{padding-bottom:4px;border-bottom:2px solid var(--line)}
+.rv{opacity:0;transform:translateY(20px)}.rv.in{opacity:1;transform:none;transition:opacity .5s,transform .5s}
+tr:nth-child(even) td{background:rgba(127,127,127,.06)}tr:hover td{background:rgba(232,89,12,.09)}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.tw{border-radius:12px;border:1px solid var(--line)}table{margin:0}td,th{border-left:0;border-right:0}
+.tip::before{content:"💡 "}.warn::before{content:"⚠️ "}
+.tip,.warn{border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.codebox{margin:12px 0;border-radius:12px;overflow:hidden;box-shadow:0 8px 22px rgba(2,6,23,.25)}
+.codebox pre{margin:0;border-radius:0}
+.cbar{background:#1e293b;padding:8px 14px;display:flex;align-items:center;gap:6px;color:#94a3b8;font:12px ui-monospace,Consolas,monospace}
+.cbar i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.cbar i:nth-child(1){background:#ff5f57}.cbar i:nth-child(2){background:#febc2e}.cbar i:nth-child(3){background:#28c840}
+.cbar em{margin-left:8px;font-style:normal}
+.k{color:#7aa7ff;font-weight:700}.sc{color:#ffb86b;font-weight:700}.op{color:#c4b5fd}
+.cp{top:6px!important}
+.done-btn{display:block;margin:22px 0 0 auto;padding:10px 20px;border-radius:99px;border:2px solid var(--acc2);background:transparent;color:var(--acc2);font-weight:800;cursor:pointer;transition:.2s}
+.done-btn:hover{transform:translateY(-1px)}.done-btn.on{background:var(--acc2);color:#fff}
+#tt{box-shadow:0 8px 20px rgba(232,89,12,.45);transition:.2s}#tt:hover{transform:translateY(-3px)}
+#menu{display:none;position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:10px;z-index:45;width:42px;height:42px;border-radius:12px;border:0;background:var(--acc);color:#fff;font-size:20px;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+@media(max-width:860px){nav{position:fixed;display:block;width:290px;transform:translateX(-105%);transition:transform .25s;z-index:44;padding-top:calc(64px + env(safe-area-inset-top,0px))}nav.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.5)}#menu{display:block}.hero h1{font-size:1.8rem}section::after{font-size:80px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+@media print{:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#fff;--fg:#111;--head:#000;--card:#fff;--line:#bbb;--code:#f3f4f6;--codefg:#111;--tip:#eef;--warn:#fee}
+nav,#menu,#tt,#bar,.cp,.done-btn,.cbar,.hero .cta{display:none!important}main{margin:0;padding:0}body{background:#fff}section{box-shadow:none;break-inside:avoid-page;opacity:1!important;transform:none!important}section::after{display:none}.hero{animation:none;color:#000;background:#fff;box-shadow:none}.hero h1,.hero p{color:#000}pre{white-space:pre-wrap;color:#111}.k,.sc,.op{color:#111}}
+
+/* ===== UI v3 (pro polish) ===== */
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;-webkit-font-smoothing:antialiased}
+pre,code,.cmd,.cb,.cbar,.flow{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+code{background:rgba(232,89,12,.12);color:var(--acc)}pre code{background:none;color:inherit}
+:focus-visible{outline:3px solid var(--acc2);outline-offset:2px;border-radius:6px}
+section{scroll-margin-top:20px}
+h2{font-size:1.95rem;letter-spacing:-.02em}
+h3::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--acc);margin-right:10px;transform:translateY(-1px)}
+nav{scrollbar-width:thin;scrollbar-color:#334155 transparent;background:linear-gradient(180deg,#0b1220,#0a1020 60%,#0d1630)}
+.grp{color:#64748b;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin:16px 10px 4px}
+.nb{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#1e293b;color:#94a3b8;font-size:12px;font-weight:800;margin-right:10px}
+nav a.active .nb{background:var(--acc);color:#fff}
+.hero{position:relative;overflow:hidden;padding:48px 40px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.hero>*{position:relative}
+.term{display:none;position:absolute!important;right:34px;top:34px;width:340px;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.term pre{background:#0b1020;margin:0;border-radius:0;min-height:230px;font-size:13px;color:#e2e8f0;white-space:pre-wrap}
+.term .p{color:#4ade80}.term .o{color:#94a3b8}
+.cur{display:inline-block;width:8px;height:15px;background:#e2e8f0;vertical-align:-2px;animation:bl 1s steps(2) infinite}@keyframes bl{50%{opacity:0}}
+@media(min-width:1150px){.hero{padding-right:410px}.term{display:block}}
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 8px}
+.pc{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-decoration:none;color:var(--fg);transition:.2s;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+.pc:hover{transform:translateY(-4px);border-color:var(--acc);box-shadow:0 14px 30px rgba(15,23,42,.12)}
+.pc span{font-size:26px}.pc b{color:var(--head);font-size:16px}.pc small{color:var(--fg);opacity:.75}.pc u{text-decoration:none;color:var(--acc);font-weight:800;font-size:13px;margin-top:6px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px}.meta span{font-size:12.5px;font-weight:700;padding:3px 11px;border-radius:99px;background:rgba(127,127,127,.12);color:var(--fg)}
+.pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+.pn a{color:var(--acc2);font-weight:700;text-decoration:none;padding:8px 14px;border-radius:10px;border:1px solid var(--line);transition:.15s}.pn a:hover{background:var(--acc2);color:#fff}
+.done-btn{margin-top:14px}
+@media(min-width:861px){#map .box:nth-child(-n+3)::before{content:"➜";position:absolute;right:-24px;top:50%;transform:translateY(-50%);color:var(--acc2);font-size:18px}}
+.ft{text-align:center;opacity:.7;margin:30px 0 0;font-size:14px}
+
+/* ===== UI v4: spacing + professional content polish ===== */
+body{padding-left:270px}
+main{margin:0 auto;max-width:1320px;padding:40px 48px 100px}
+.hero{margin-bottom:0;padding:52px 44px}
+.hero h1{font-size:clamp(1.9rem,3.4vw,2.8rem);line-height:1.15;margin-bottom:12px}
+.hero p{font-size:1.1rem;max-width:62ch;line-height:1.6}
+.path{margin:28px 0 36px;gap:16px}
+section{padding:40px 48px 36px;margin:28px 0;border-radius:20px}
+section>*:last-child{margin-bottom:0}
+h2{margin:0 0 6px;line-height:1.2}
+h2 small{display:block;width:fit-content;margin-bottom:12px}
+.meta{margin:12px 0 28px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+h3{margin:38px 0 14px;padding-bottom:8px;font-size:1.2rem;border-bottom:1px solid var(--line)}
+section p{margin:0 0 16px;line-height:1.8}
+section ul,section ol{margin:0 0 20px;padding-left:1.5em}
+section li{margin:9px 0;line-height:1.75}
+li::marker{color:var(--acc);font-weight:800}
+.tw{margin:20px 0 28px;overflow-x:auto;border-radius:14px}
+table{font-size:15px}
+th,td{padding:12px 16px}
+th{background:#0f172a;color:#fff;font-size:12.5px}
+td:first-child{font-weight:600;color:var(--head)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) th{background:#1e293b}}
+:root[data-theme="dark"] th{background:#1e293b}
+.codebox{margin:22px 0 28px}
+pre{padding:18px 22px;font-size:13.5px;line-height:1.75}
+.tip,.warn,.try{margin:24px 0;padding:16px 20px;font-size:15.5px;line-height:1.7;border-radius:12px}
+.tip,.warn{border-left-width:4px}
+.try{background:rgba(28,100,242,.06);border:1px dashed var(--acc2)}
+.flow{text-align:left;width:fit-content;max-width:100%;margin:22px auto;padding:20px 26px;font-size:13px;line-height:1.65;overflow-x:auto}
+#fw,#bw{margin:8px 0 14px}.cb{margin:4px}
+#info{margin:16px 0 24px}
+.pn{margin-top:40px;padding-top:22px}
+.done-btn{margin-top:18px}
+@media(max-width:860px){body{padding-left:0}main{padding:68px 14px 70px}section{padding:28px 18px 26px;border-radius:16px}h2{font-size:1.5rem}h3{font-size:1.1rem;margin-top:30px}th,td{padding:10px 12px}table{font-size:14px}.hero{padding:36px 22px}pre{padding:14px 16px;font-size:13px}}
+@media print{body{padding-left:0}main{max-width:none;padding:0}section{padding:18px 0;margin:0}}
+
+.three{margin:0 0 28px;padding:18px 22px;border-radius:14px;background:linear-gradient(135deg,rgba(28,100,242,.09),rgba(232,89,12,.08));border:1px solid var(--line)}
+.three>b{display:block;color:var(--head);margin-bottom:8px;font-size:15px}
+.three>div{display:flex;gap:14px;margin:7px 0;line-height:1.65;font-size:16px}
+.three .tl{flex:0 0 48px;font-weight:800;color:var(--acc);text-transform:uppercase;font-size:12px;letter-spacing:.06em;padding-top:4px}
+.three.sm{margin:6px 0 20px;padding:14px 18px}
+</style><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"></head><body>
+<nav><b>📘 Git &amp; GitHub</b>
+<a href="#m1">1 · VCS Basics</a><a href="#m2">2 · SVN vs Git</a><a href="#m3">3 · Install &amp; Setup</a><a href="#m4">4 · GitHub &amp; Remote Repo</a><a href="#m5">5 · HTTPS vs SSH</a><a href="#m6">6 · init, add, commit</a><a href="#m7">7 · Clone</a><a href="#m8">8 · Push</a><a href="#m9">9 · Fetch &amp; Pull</a><a href="#m10">10 · .gitignore</a><a href="#m11">11 · Branches</a><a href="#m12">12 · Branching Strategy</a><a href="#m13">13 · Merge</a><a href="#m14">14 · Stash</a><a href="#m15">15 · Checkout</a><a href="#m16">16 · Reset</a><a href="#m17">17 · Rebase</a><a href="#m18">18 · Cheat Sheet</a><a href="#m19">★ 19 · Master Hands-On</a></nav>
+<main>
+<div class="hero"><h1>Git &amp; GitHub: Complete Hands-On Guide</h1><p>19 modules, basics to advanced, using Git Bash. Each module: <b>idea → commands → try it</b>. The last module builds a real project using everything.</p></div>
+
+<section id="m1"><h2><small>Module 1</small>Version Control System (VCS) Basics</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>A tool that remembers every version of your files.</span></div><div><span class="tl">Why</span><span>Undo mistakes and work in a team without overwriting each other.</span></div><div><span class="tl">How</span><span>You save snapshots called <b>commits</b>, each with a message, and can go back any time.</span></div></div>
+<p>A <b>VCS</b> tracks changes to files over time. It lets you see history (who, what, when, why), go back when something breaks, work in a team without overwriting each other, and build features in isolation with <b>branches</b>.</p>
+<p>Without it you get <code>report_final.docx</code>, <code>report_final_v2.docx</code>, <code>report_final_REAL.docx</code>. A VCS replaces that with one searchable history.</p>
+<div class="tw"><table><tr><th>Term</th><th>Meaning</th></tr><tr><td>Repository</td><td>Project folder + its full history</td></tr><tr><td>Commit</td><td>A saved snapshot with a message</td></tr><tr><td>Branch</td><td>An independent line of work</td></tr><tr><td>Remote</td><td>A copy of the repo on a server (GitHub)</td></tr><tr><td>Clone</td><td>A full copy of a remote repo on your PC</td></tr></table></div></section>
+
+<section id="m2"><h2><small>Module 2</small>Centralized vs Distributed: SVN vs Git</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>SVN keeps history on one server; Git gives everyone a full copy.</span></div><div><span class="tl">Why</span><span>With Git you can work offline, and every copy is a backup.</span></div><div><span class="tl">How</span><span>Use Git. GitHub is just a website that hosts Git projects.</span></div></div>
+<div class="flow">SVN: one server has the history     Git: everyone has the full history
+   Server                              GitHub
+  /  |  \                            /   |   \
+ A   B   C  (working copies)       A     B     C  (each a full backup)</div>
+<div class="tw"><table><tr><th>Feature</th><th>SVN</th><th>Git</th></tr>
+<tr><td>History</td><td>Only on server</td><td>In every clone</td></tr><tr><td>Offline work</td><td>Mostly impossible</td><td>Fully possible</td></tr><tr><td>Speed</td><td>Network dependent</td><td>Fast (local)</td></tr><tr><td>Branching</td><td>Heavy, discouraged</td><td>Light, encouraged</td></tr><tr><td>Single point of failure</td><td>Yes</td><td>No</td></tr><tr><td>Commit</td><td>Goes to server</td><td>Local; <code>push</code> syncs</td></tr></table></div>
+<div class="tip"><b>Remember:</b> Git is the tool on your PC. GitHub is a website that hosts Git repos.</div></section>
+
+<section id="m3"><h2><small>Module 3</small>Installing Git Bash &amp; Initial Setup</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Git Bash is Git plus a command window for Windows.</span></div><div><span class="tl">Why</span><span>Every command in this guide runs there.</span></div><div><span class="tl">How</span><span>Install it, then tell Git your name and email once with <code>git config</code>.</span></div></div>
+<ol><li>Download from <code>git-scm.com/downloads</code>, run installer, keep defaults.</li><li>Open: right-click any folder → <b>Git Bash Here</b>.</li></ol>
+<pre><code>git --version                      <span class="c"># e.g. git version 2.45.0.windows.1</span>
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --list                  <span class="c"># verify</span>
+git config --global init.defaultBranch main
+git config --global core.editor "notepad"</code></pre>
+<div class="try"><b>Try it:</b> run <code>git config user.name</code>. It should print your name.</div><h3>How to read any Git command</h3><p>Every command follows the same shape: <code>git &lt;action&gt; [options] [target]</code>.</p><div class="tw"><table><tr><th>Piece</th><th>Plain meaning</th></tr><tr><td><code>git</code></td><td>The program. Always first.</td></tr><tr><td><code>commit</code>, <code>push</code>, <code>add</code></td><td>The <b>action</b> (called a subcommand): what you want done.</td></tr><tr><td><code>-m</code>, <code>-u</code>, <code>-a</code></td><td><b>Short option</b>: one dash + one letter. Switches a feature on. Can combine: <code>-am</code> = <code>-a -m</code>.</td></tr><tr><td><code>--hard</code>, <code>--amend</code></td><td><b>Long option</b>: two dashes + a word. Same idea, easier to read.</td></tr><tr><td><code>"msg"</code></td><td>A value for an option. Quotes keep spaces together.</td></tr><tr><td><code>hello.txt</code> / <code>.</code></td><td>A file name / the dot means "everything in this folder".</td></tr><tr><td><code>--</code> (alone)</td><td>"Everything after this is a file name, not an option."</td></tr><tr><td><code>main</code>, <code>origin</code></td><td>Names: a branch / a remote nickname (see Module 5).</td></tr><tr><td><code>HEAD</code>, <code>HEAD~1</code></td><td>"You are here" pin / one commit before it (see Module 5).</td></tr></table></div></section>
+
+<section id="m4"><h2><small>Module 4</small>GitHub Signup &amp; Creating a Remote Repository</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>GitHub is a website that stores your Git projects online.</span></div><div><span class="tl">Why</span><span>It gives you a backup, sharing and teamwork.</span></div><div><span class="tl">How</span><span>Sign up, click <b>New repository</b>, and keep it empty.</span></div></div>
+<ol><li><code>github.com</code> → <b>Sign up</b> → email, password, username → verify email → pick <b>Free</b>.</li><li><b>+</b> (top right) → <b>New repository</b>.</li><li>Name it (<code>git-practice</code>), choose Public/Private. Leave README/.gitignore <b>unchecked</b> so the repo is empty.</li><li><b>Create repository</b>, then copy its URL.</li></ol></section>
+
+<section id="m5"><h2><small>Module 5</small>Connecting Local Git to GitHub: HTTPS vs SSH</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Linking your PC folder to the GitHub repository.</span></div><div><span class="tl">Why</span><span>So push and pull know where to send and get your code.</span></div><div><span class="tl">How</span><span>Save the GitHub address under the nickname <code>origin</code>, using HTTPS or SSH.</span></div></div>
+<div class="tw"><table><tr><th></th><th>HTTPS</th><th>SSH</th></tr><tr><td>URL</td><td><code>https://github.com/user/repo.git</code></td><td><code>git@github.com:user/repo.git</code></td></tr><tr><td>Login</td><td>Browser sign-in or access token</td><td>SSH key</td></tr><tr><td>Best for</td><td>Beginners</td><td>Daily use, no prompts</td></tr></table></div>
+<h3>Option A: HTTPS</h3><pre><code>git remote add origin https://github.com/USER/git-practice.git</code></pre>
+<h3>Option B: SSH</h3><pre><code>ssh-keygen -t ed25519 -C "you@example.com"
+eval "$(ssh-agent -s)" &amp;&amp; ssh-add ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub          <span class="c"># copy → GitHub Settings → SSH and GPG keys → New</span>
+ssh -T git@github.com              <span class="c"># test</span>
+git remote add origin git@github.com:USER/git-practice.git
+git remote -v                      <span class="c"># verify</span></code></pre><h3>What is "origin"? (simple words)</h3><div class="three sm"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>A nickname for your GitHub address.</span></div><div><span class="tl">Why</span><span>Typing the long URL every time would be painful.</span></div><div><span class="tl">How</span><span>Set it once with <code>git remote add origin URL</code>, then use <code>git push origin main</code>.</span></div></div>
+<ul><li><b>origin is just a nickname.</b> Your GitHub address is long (<code>https://github.com/USER/repo.git</code>). Git lets you save it under a short name, like saving a phone number under a contact name. By convention that name is <code>origin</code>.</li>
+<li><b>Who creates it?</b> You, with <code>git remote add origin URL</code>, or Git itself when you run <code>git clone</code>.</li>
+<li><b>Nothing magic:</b> you could call it <code>github</code> or <code>backup</code>. Everyone just uses <code>origin</code>.</li>
+<li>So <code>git push origin main</code> reads as: <i>"send my <b>main</b> branch to the place nicknamed <b>origin</b>."</i></li>
+<li><b>What is <code>origin/main</code>?</b> Your PC's <i>bookmark</i> of where <code>main</code> was on GitHub the last time you talked to it. It updates only on <code>fetch</code>, <code>pull</code> or <code>push</code>.</li></ul>
+<div class="flow">YOUR PC                                     GITHUB (origin)
+[ main ]         ── git push origin main ──▶  [ main ]
+[ origin/main ]  ◀──── git fetch / pull ─────  (the real one)</div>
+<pre><code>git remote -v                       <span class="c"># list nicknames + URLs</span>
+git remote rename origin github     <span class="c"># change the nickname</span>
+git remote set-url origin NEW_URL   <span class="c"># same nickname, new address</span>
+git remote add upstream URL         <span class="c"># add a 2nd remote (e.g. a fork's original)</span></code></pre><h3>HEAD: the "You are here" pin</h3><div class="three sm"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>A pin showing where you are right now.</span></div><div><span class="tl">Why</span><span>Git needs to know which commit your next work builds on.</span></div><div><span class="tl">How</span><span>HEAD points to your branch; <code>HEAD~1</code> means one commit back.</span></div></div>
+<ul><li><b>HEAD</b> is Git's pointer to <b>where you are working right now</b>. Think of the red pin on a map.</li>
+<li>Normally HEAD points to a <b>branch</b> (like <code>main</code>), and the branch points to its <b>latest commit</b>.</li>
+<li>When you commit, the branch and HEAD move forward together. When you <code>git checkout</code>, HEAD jumps to another branch.</li>
+<li><b>Detached HEAD</b> = HEAD points straight at an old commit, not a branch (Module 15).</li></ul><div class="flow"> commits:  A ──── B ──── C
+                         ▲
+ branch:               main      (a sticky note on C)
+                         ▲
+ HEAD ───────────────────┘       "I am on main, which is at C"</div><div class="tw"><table><tr><th>Written as</th><th>Means</th></tr><tr><td><code>HEAD</code></td><td>The commit you are on now</td></tr><tr><td><code>HEAD~1</code> (or <code>HEAD^</code>)</td><td>One commit <b>before</b> HEAD (its parent)</td></tr><tr><td><code>HEAD~3</code></td><td>Three commits before HEAD</td></tr><tr><td><code>main~2</code></td><td>Two commits before the tip of main</td></tr></table></div><h3>Local vs remote: how to tell at a glance</h3>
+<div class="tip"><b>Easy rule:</b> a name that starts with <code>origin/</code> is about <b>GitHub</b>. A name without it is on <b>your PC</b>.</div><div class="tw"><table><tr><th>You see</th><th>Lives where</th><th>Plain meaning</th></tr><tr><td><code>main</code></td><td>Your PC</td><td>Your own branch</td></tr><tr><td><code>origin/main</code></td><td>Your PC (a bookmark)</td><td>Where GitHub's <code>main</code> was the last time you talked to it</td></tr><tr><td><code>origin</code></td><td>Your PC (a setting)</td><td>Nickname for the GitHub address</td></tr><tr><td>main on github.com</td><td>GitHub</td><td>The real remote branch. You see it in the browser</td></tr><tr><td><code>HEAD</code></td><td>Your PC</td><td>Where you are standing</td></tr></table></div><h3>Commands that tell you where things stand</h3><div class="tw"><table><tr><th>Command</th><th>Shows</th></tr><tr><td><code>git status</code></td><td>Are you ahead of or behind GitHub, plus unsaved changes</td></tr><tr><td><code>git branch</code></td><td>Local branches only (* = current)</td></tr><tr><td><code>git branch -r</code></td><td>Remote bookmarks only (<code>origin/main</code> ...)</td></tr><tr><td><code>git branch -a</code></td><td>Both. Remote ones show as <code>remotes/origin/...</code></td></tr><tr><td><code>git branch -vv</code></td><td>Each local branch, which remote branch it follows, ahead/behind counts</td></tr><tr><td><code>git log --oneline --decorate --graph --all</code></td><td>History with labels showing where HEAD, main and origin/main sit</td></tr><tr><td><code>git remote show origin</code></td><td>Asks GitHub directly and reports what is in sync</td></tr></table></div><pre><code>git log --oneline --decorate
+c3d4e5f (HEAD -&gt; main) Add search               <span class="c"># only on your PC: not pushed yet</span>
+a1b2c3d (origin/main, origin/HEAD) Add footer   <span class="c"># also on GitHub</span></code></pre><p><b>Trick:</b> if a commit has the <code>origin/main</code> label, GitHub has it. If it does not, it is local only.</p><h3>What <code>git status</code> is telling you</h3><div class="tw"><table><tr><th>Message</th><th>Meaning</th><th>Do this</th></tr><tr><td>up to date with 'origin/main'</td><td>In sync (as of last contact)</td><td>Nothing</td></tr><tr><td>ahead of 'origin/main' by 2 commits</td><td>You have 2 commits GitHub lacks</td><td><code>git push</code></td></tr><tr><td>behind 'origin/main' by 3 commits</td><td>GitHub has 3 commits you lack</td><td><code>git pull</code></td></tr><tr><td>have diverged</td><td>Both sides have new commits</td><td><code>git pull</code>, fix conflicts, then <code>git push</code></td></tr></table></div><p>Note: status compares against your <i>last-known</i> bookmark. Run <code>git fetch</code> first for fresh information.</p></section>
+
+<section id="m6"><h2><small>Module 6</small>Git Basics: init, add, commit</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Git saves work in three steps: edit, stage, commit.</span></div><div><span class="tl">Why</span><span>You choose exactly what goes into each snapshot.</span></div><div><span class="tl">How</span><span><code>git add</code> moves changes to staging; <code>git commit</code> saves them.</span></div></div>
+<h3>The three areas</h3><div class="three sm"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Git has three places a change passes through: working directory, staging area, repository.</span></div><div><span class="tl">Why</span><span>You control exactly what goes into each commit.</span></div><div><span class="tl">How</span><span><code>add</code> moves forward to staging, <code>commit</code> saves it, <code>reset HEAD file</code> steps back.</span></div></div>
+<div class="try"><b>Interactive map:</b> tap any command. 🟠 orange = where data comes <b>from</b>, 🔵 blue = where it <b>goes</b>.</div>
+<div id="map"><div class="box" id="b-wd">📝 Working Directory<small>files you edit</small></div><div class="box" id="b-st">🛒 Staging Area<small>next commit's cart</small></div><div class="box" id="b-lr">🗄️ Local Repository<small>.git history</small></div><div class="box" id="b-rr">☁️ Remote (GitHub)<small>origin</small></div></div>
+<div class="box" id="b-sh">📦 Stash<small>shelf for unfinished work</small></div>
+<b>➡️ Forward</b><div id="fw"></div><b>⬅️ Backward</b><div id="bw"></div>
+<div id="info">Pick a command above to see exactly what it moves and what it leaves alone.</div>
+<h3>Travel table: every hop, both directions</h3>
+<div class="tw"><table><tr><th>Hop</th><th>➡️ Forward</th><th>⬅️ Backward</th></tr>
+<tr><td>Working dir ↔ Staging</td><td><code>git add FILE</code></td><td><code>git reset HEAD FILE</code></td></tr>
+<tr><td>Staging ↔ Local repo</td><td><code>git commit</code></td><td><code>git reset --soft HEAD~1</code></td></tr>
+<tr><td>Working dir ↔ Local repo (skip staging)</td><td><code>git commit -am "msg"</code></td><td><code>git reset --mixed HEAD~1</code> (keep files) or <code>--hard</code> (wipe)</td></tr>
+<tr><td>Local repo ↔ Remote</td><td><code>git push</code></td><td><code>git fetch</code> (look) / <code>git pull</code> (apply)</td></tr>
+<tr><td>Working dir ↔ Stash</td><td><code>git stash -u</code></td><td><code>git stash pop</code></td></tr>
+<tr><td>Remote → everything</td><td colspan="2"><code>git clone URL</code> fills local repo and working dir in one go</td></tr></table></div>
+<h3>Points to remember</h3>
+<ul><li><b>Staging is a copy, not a move.</b> After <code>git add</code>, your file is still in the working directory. If you edit it again, you must <code>git add</code> again.</li>
+<li><b>Only staged changes get committed.</b> Edits you didn't stage stay behind as "modified".</li>
+<li><b><code>git status</code> tells you the next move:</b> red = working dir only, green = staged, clean = nothing to do.</li>
+<li><b>Commits are local until pushed.</b> Nobody on GitHub sees them yet.</b></li>
+<li><b>Two kinds of "undo".</b> Moving files between areas (safe: <code>reset HEAD FILE</code>, soft/mixed reset) vs deleting work (dangerous: <code>checkout -- FILE</code>, <code>reset --hard</code>).</li>
+<li><b>Deleted a commit by accident?</b> <code>git reflog</code> still remembers it for weeks.</li></ul>
+<pre><code>mkdir git-practice &amp;&amp; cd git-practice
+git init                      <span class="c"># start tracking</span>
+git status                    <span class="c"># where is everything?</span></code></pre>
+<h3>Working dir → Staging</h3>
+<pre><code>echo "Hello" &gt; hello.txt
+<span class="c"># Stage one file. Edit it again? Add it again.</span>
+git add hello.txt
+<span class="c"># Stage everything. Check git status first.</span>
+git add .
+<span class="c"># Patch mode: asks per chunk. y=stage, n=skip, s=split, e=edit, q=quit.</span>
+git add -p</code></pre>
+<h3>Staging → back to Working dir (unstage)</h3>
+<pre><code><span class="c"># Unstage: file leaves the cart, your edits stay.</span>
+git reset HEAD hello.txt</code></pre>
+<h3>Throw away edits in Working dir</h3>
+<pre><code><span class="c"># Discard edits: back to last saved version. No undo.</span>
+git checkout -- hello.txt</code></pre>
+<h3>Staging → Repository (commit)</h3>
+<pre><code>git commit -m "Add hello.txt"
+<span class="c"># -a stages tracked modified files, then commits (not new files).</span>
+git commit -am "Update"
+<span class="c"># Replace the last commit. Only before pushing.</span>
+git commit --amend -m "New msg"</code></pre>
+<h3>Inspect</h3>
+<pre><code><span class="c"># Unstaged changes (working vs staging).</span>
+git diff
+<span class="c"># What the next commit will contain.</span>
+git diff --staged
+git log --oneline --graph</code></pre>
+<div class="tip"><b>Lifecycle:</b> Untracked → Staged → Committed → Modified → Staged …</div>
+<div class="try"><b>Try it:</b> create a.txt and b.txt, stage only a.txt, run <code>git status</code>, unstage it, stage both, commit.</div></section>
+
+<section id="m7"><h2><small>Module 7</small>Git Clone</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Copying an existing GitHub project to your PC.</span></div><div><span class="tl">Why</span><span>You can start working on a project that already exists.</span></div><div><span class="tl">How</span><span><code>git clone URL</code> downloads all files and the full history.</span></div></div><p>Copies a remote repo <b>with all its history</b> onto your PC and automatically names the remote <code>origin</code>. <code>init</code> starts a brand-new empty repo; <code>clone</code> copies an existing one.</p><div class="tw"><table><tr><th>Part of <code>git clone URL my-folder</code></th><th>Plain meaning</th></tr><tr><td><code>clone</code></td><td>Action: download a full copy.</td></tr><tr><td><code>URL</code></td><td>Where to copy from (the GitHub address).</td></tr><tr><td><code>my-folder</code></td><td>Optional: the new folder name. If omitted, the repo name is used.</td></tr></table></div><pre><code>git clone https://github.com/USER/git-practice.git   <span class="c"># copy into a folder named git-practice</span>
+git clone URL my-folder                              <span class="c"># same, but choose the folder name</span>
+git clone -b develop URL                             <span class="c"># -b = branch: start on the develop branch</span>
+git clone --depth 1 URL                              <span class="c"># shallow: only the latest snapshot, much faster</span></code></pre><div class="try"><b>Try it:</b> clone a public repo, <code>cd</code> into it, run <code>git remote -v</code> (you will see origin) and <code>git log --oneline -5</code>.</div></section>
+
+<section id="m8"><h2><small>Module 8</small>Git Push</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Sending your local commits up to GitHub.</span></div><div><span class="tl">Why</span><span>It backs up your work and lets teammates see it.</span></div><div><span class="tl">How</span><span><code>git push -u origin main</code> the first time, then just <code>git push</code>.</span></div></div><p>Push uploads your <b>local commits</b> to the remote. Only <b>commits</b> travel. Edits you have not committed stay on your PC.</p><h3>Read the command word by word</h3><div class="tw"><table><tr><th>Part of <code>git push -u origin main</code></th><th>Plain meaning</th></tr><tr><td><code>git</code></td><td>The program.</td></tr><tr><td><code>push</code></td><td>Action: send my commits UP to a remote.</td></tr><tr><td><code>-u</code></td><td>Short for <code>--set-upstream</code>: "remember this link." Afterwards, plain <code>git push</code> and <code>git pull</code> need no extra words.</td></tr><tr><td><code>origin</code></td><td><b>Where</b> to send: the nickname of your GitHub address (Module 5).</td></tr><tr><td><code>main</code></td><td><b>What</b> to send: the branch called main.</td></tr></table></div><p>Said in English: <i>"Git, send my main branch to origin, and remember that these two are linked."</i></p><div class="flow">BEFORE push                          AFTER push
+your PC : A ─ B ─ C ─ D   (main)     your PC : A ─ B ─ C ─ D   (main, origin/main)
+GitHub  : A ─ B                      GitHub  : A ─ B ─ C ─ D
+(status: "ahead by 2")               (status: "up to date")</div><pre><code>git push -u origin main                  <span class="c"># FIRST push of a branch: send it and remember the link</span>
+git push                                 <span class="c"># later pushes: send new commits of the current branch</span>
+git push origin feature-login            <span class="c"># push another branch by name (creates it on GitHub if new)</span>
+git push origin v1.0                     <span class="c"># push one tag (tags are NOT sent automatically)</span>
+git push origin --delete feature-login   <span class="c"># delete that branch on GitHub (your local copy stays)</span>
+git push --force-with-lease              <span class="c"># overwrite GitHub history ONLY if nobody pushed since you last looked</span></code></pre><div class="tw"><table><tr><th>Term</th><th>Plain meaning</th></tr><tr><td>upstream</td><td>The remote branch your local branch is linked to (e.g. <code>origin/main</code>).</td></tr><tr><td>non-fast-forward</td><td>GitHub has commits you do not have. Git refuses so it does not erase them.</td></tr><tr><td>force push</td><td>Overwrites GitHub's history. Dangerous on shared branches. <code>--force-with-lease</code> is the safer version.</td></tr></table></div><div class="warn"><b>Push rejected?</b> 1) <code>git pull</code> 2) fix any conflict 3) <code>git push</code> again.</div><div class="try"><b>Try it:</b> commit something, run <code>git status</code> (ahead by 1), push, run <code>git status</code> again (up to date).</div></section>
+
+<section id="m9"><h2><small>Module 9</small>Git Fetch &amp; Pull</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Bringing new work from GitHub down to your PC.</span></div><div><span class="tl">Why</span><span>You stay up to date and avoid conflicts.</span></div><div><span class="tl">How</span><span><code>fetch</code> only looks; <code>pull</code> downloads and updates your files.</span></div></div><p>Both bring new work <b>from GitHub to your PC</b>. The difference is whether your files change.</p><div class="tw"><table><tr><th>Command</th><th>Does</th><th>Changes your files?</th></tr><tr><td><code>git fetch</code></td><td>Downloads new commits into the <code>origin/main</code> bookmark only</td><td>No (safe)</td></tr><tr><td><code>git pull</code></td><td>fetch <b>plus</b> merge into your branch</td><td>Yes</td></tr></table></div><div class="flow">GitHub ──fetch──▶ origin/main (bookmark) ──merge──▶ main (your branch) ──▶ your files
+       └──────────────── git pull = both steps ────────────────────────┘</div><pre><code>git fetch origin                        <span class="c"># origin = download from GitHub; nothing in your files changes</span>
+git log main..origin/main --oneline     <span class="c"># ".." = commits GitHub has that my main does not (what's new?)</span>
+git diff main origin/main               <span class="c"># show the actual line changes</span>
+git merge origin/main                   <span class="c"># now apply them to my branch</span>
+git pull                                <span class="c"># shortcut for fetch + merge</span>
+git pull --rebase                       <span class="c"># fetch + rebase: replay MY commits on top, straight history</span></code></pre><div class="tip"><b>Habit:</b> <code>git pull</code> before you start work and before you push.</div></section>
+
+<section id="m10"><h2><small>Module 10</small>Ignoring Files (.gitignore)</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>A list of files Git must never track.</span></div><div><span class="tl">Why</span><span>It keeps passwords, junk and huge folders out of your repo.</span></div><div><span class="tl">How</span><span>Write file names or patterns in a file called <code>.gitignore</code>.</span></div></div>
+<pre><code>node_modules/
+dist/
+*.log
+.env
+.DS_Store</code></pre>
+<p>Save that as <code>.gitignore</code>. Patterns: <code>*.log</code> any log, <code>folder/</code> a folder, <code>!keep.log</code> exception.</p>
+<p>Already tracked by mistake? Ignoring does not untrack:</p>
+<pre><code>git rm --cached .env
+git commit -m "Stop tracking .env"
+git check-ignore -v .env</code></pre>
+<div class="warn">If a secret was ever pushed, <b>rotate it</b>. Deleting is not enough.</div></section>
+
+<section id="m11"><h2><small>Module 11</small>Git Branch Management</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>A separate line of work inside one project.</span></div><div><span class="tl">Why</span><span>You can try new things without breaking the working version.</span></div><div><span class="tl">How</span><span><code>git checkout -b name</code> creates one; <code>git branch</code> lists them.</span></div></div><p>A branch is a movable pointer (a sticky note) on a commit. <code>HEAD</code> shows which branch you are on.</p><div class="tw"><table><tr><th>Part of <code>git checkout -b feature-login</code></th><th>Plain meaning</th></tr><tr><td><code>checkout</code></td><td>Action: move to a branch (or commit).</td></tr><tr><td><code>-b</code></td><td>"branch": create the new branch first, then move to it.</td></tr><tr><td><code>feature-login</code></td><td>The new branch name.</td></tr></table></div><pre><code>git branch                        <span class="c"># list local branches (* = the one you are on)</span>
+git branch -vv                    <span class="c"># also show linked remote branch and ahead/behind</span>
+git branch -a                     <span class="c"># local + remote bookmarks</span>
+git branch feature-login          <span class="c"># create only (you stay where you are)</span>
+git checkout feature-login          <span class="c"># move to it</span>
+git checkout -b feature-login       <span class="c"># create + move in one step</span>
+git checkout -                      <span class="c"># jump back to the previous branch</span>
+git branch -m old-name new-name   <span class="c"># -m = move/rename</span>
+git branch -d feature-login       <span class="c"># -d = delete, only if already merged (safe)</span>
+git branch -D feature-login       <span class="c"># -D = force delete even if NOT merged (careful)</span>
+git push -u origin feature-login  <span class="c"># publish the branch to GitHub</span></code></pre><div class="try"><b>Try it:</b> create <code>feature-a</code>, commit a file, <code>git checkout main</code>, and watch the file disappear. Switch back and it returns.</div></section>
+
+<section id="m12"><h2><small>Module 12</small>Git Branching Strategy</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Team rules for how branches are named and used.</span></div><div><span class="tl">Why</span><span>They keep <code>main</code> stable and work organised.</span></div><div><span class="tl">How</span><span>One branch per feature, open a Pull Request, merge, then delete the branch.</span></div></div>
+<div class="tw"><table><tr><th>Branch</th><th>Purpose</th></tr><tr><td><code>main</code></td><td>Always stable</td></tr><tr><td><code>develop</code></td><td>Integration (Git Flow)</td></tr><tr><td><code>feature/x</code></td><td>One new feature</td></tr><tr><td><code>bugfix/x</code></td><td>Normal fix</td></tr><tr><td><code>hotfix/x</code></td><td>Urgent production fix</td></tr></table></div>
+<p><b>GitHub Flow</b> (start here): feature branch → Pull Request → review → merge → delete. <b>Git Flow</b>: adds <code>develop</code> and release branches. <b>Trunk-based</b>: tiny changes into <code>main</code> daily.</p>
+<div class="tip">Never commit straight to <code>main</code>. One purpose per branch. Keep branches short-lived.</div></section>
+
+<section id="m13"><h2><small>Module 13</small>Git Merge</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Joining one branch's work into another.</span></div><div><span class="tl">Why</span><span>Finished features must reach <code>main</code>.</span></div><div><span class="tl">How</span><span>Check out the target branch and run <code>git merge other-branch</code>; fix conflicts by hand.</span></div></div>
+<p>Combines another branch into the <b>current</b> one.</p>
+<pre><code>git checkout main
+git merge feature-login
+git merge --no-ff feature-login   <span class="c"># force a merge commit</span>
+git merge --abort</code></pre>
+<p><b>Fast-forward:</b> main didn't move, pointer just advances. <b>Three-way:</b> both moved, Git makes a merge commit.</p>
+<h3>Resolving a conflict</h3>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+your version
+=======
+their version
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-login</code></pre>
+<ol><li><code>git status</code>, open files marked "both modified".</li><li>Keep one side or combine; delete the 3 marker lines.</li><li><code>git add FILE</code> then <code>git commit</code>.</li></ol></section>
+
+<section id="m14"><h2><small>Module 14</small>Git Stash</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>A shelf for half-done work.</span></div><div><span class="tl">Why</span><span>You can switch tasks without committing messy code.</span></div><div><span class="tl">How</span><span><code>git stash</code> saves it; <code>git stash pop</code> brings it back.</span></div></div>
+<p>Shelves uncommitted work so you can switch tasks with a clean directory.</p>
+<pre><code><span class="c"># -u includes new files, -m names the stash.</span>
+git stash push -u -m "wip login"
+git stash list
+git stash show -p stash@{0}
+git stash pop                      <span class="c"># re-apply + remove</span>
+git stash apply stash@{1}          <span class="c"># re-apply, keep</span>
+git stash drop stash@{0}
+git stash clear</code></pre><div class="tw"><table><tr><th>Part of <code>git stash push -u -m &quot;wip login&quot;</code></th><th>Plain meaning</th></tr><tr><td><code>stash push</code></td><td>Shelve my uncommitted work.</td></tr><tr><td><code>-u</code></td><td>Include brand-new (untracked) files too.</td></tr><tr><td><code>-m "..."</code></td><td>Give the shelf item a name.</td></tr></table></div>
+<div class="tip"><b>Scenario:</b> bug report mid-feature → stash → hotfix branch → fix → back → pop.</div></section>
+
+<section id="m15"><h2><small>Module 15</small>Git Checkout</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Moving to another branch or to an old commit.</span></div><div><span class="tl">Why</span><span>You can switch tasks and look at past versions.</span></div><div><span class="tl">How</span><span><code>git checkout name</code>, and come back with <code>git checkout main</code>.</span></div></div>
+<p>One command, several jobs:</p><div class="tw"><table><tr><th>Job</th><th>Command</th></tr><tr><td>Switch to a branch</td><td><code>git checkout main</code></td></tr><tr><td>Create a branch and switch</td><td><code>git checkout -b new-branch</code></td></tr><tr><td>Discard edits in a file</td><td><code>git checkout -- file.txt</code></td></tr><tr><td>Visit an old commit</td><td><code>git checkout HASH</code></td></tr><tr><td>Get one file from an old commit</td><td><code>git checkout HASH -- file.txt</code></td></tr></table></div>
+<p><b>Detached HEAD:</b> you're on a commit, not a branch. Keep new work with <code>git checkout -b rescue</code>; leave with <code>git checkout main</code>.</p>
+<pre><code>git checkout HASH -- file.txt   <span class="c"># restore one file from the past</span></code></pre><h3>Time travel: see old commits and come back (every step)</h3>
+<div class="flow">oldest ─────────────────────────────────▶ newest
+  A ──── B ──── C ──── D ──── E     ◀ main = the present
+         ▲
+   git checkout B   (you are visiting B)
+   git checkout main         (you are back at E)</div>
+<p><b>Simple idea:</b> history is a chain of snapshots. <code>HEAD</code> is "where you are standing". Visiting an old snapshot only moves HEAD. <b>Nothing is deleted</b>, and <code>main</code> stays safe at the present.</p>
+<h3>Step 1: Make your folder clean</h3>
+<pre><code>git status        <span class="c"># want: "nothing to commit, working tree clean"</span>
+git stash -u      <span class="c"># only if you have unfinished edits: shelve them first</span></code></pre>
+<h3>Step 2: See the list of old commits</h3>
+<pre><code>git log --oneline                 <span class="c"># one line per commit, newest first. Space = next page, q = quit</span>
+<span class="c"># a1b2c3d Add search     &lt;- newest (present)
+# 9f8e7d6 Fix typo
+# 5c4b3a2 Initial commit  &lt;- oldest</span>
+git log --oneline --graph --all   <span class="c"># also draws branches</span>
+git log -5                        <span class="c"># last 5 only, full details</span>
+git log --since="2 days ago"      <span class="c"># by time</span>
+git log -- hello.txt              <span class="c"># history of one file</span></code></pre>
+<p>The 7-letter code (<code>9f8e7d6</code>) is the commit's <b>hash</b>, its ID. Copy it.</p>
+<h3>Step 3: Peek inside one commit (nothing changes yet)</h3>
+<pre><code>git show 9f8e7d6          <span class="c"># message + exact lines changed in that commit</span>
+git show 9f8e7d6 --stat   <span class="c"># just which files changed</span>
+git diff 9f8e7d6 HEAD     <span class="c"># what changed between then and now</span></code></pre>
+<h3>Step 4: Go there</h3>
+<pre><code>git checkout 9f8e7d6   <span class="c"># your folder now shows that old version</span>
+git status                    <span class="c"># "HEAD detached at 9f8e7d6"</span></code></pre>
+<p>Git prints a "detached HEAD" notice. That is normal, not an error: it means you are on a commit, not on a branch. Your folder now looks exactly like it did then.</p>
+<h3>Step 5: Look around</h3>
+<p>Open files, run the app, read the code. Don't commit here unless you plan to keep it (see below).</p>
+<h3>Step 6: Come back to the present</h3>
+<pre><code>git checkout main     <span class="c"># files jump back to the newest version</span>
+git status          <span class="c"># "On branch main"</span>
+git stash pop       <span class="c"># only if you stashed in Step 1</span></code></pre>
+<p>Lost your place? <code>git checkout -</code> returns to wherever you were before. <code>git checkout main</code> always works.</p>
+<h3>Extras</h3>
+<pre><code>git checkout 9f8e7d6 -- hello.txt   <span class="c"># bring ONE old file into your folder, stay on main</span>
+git checkout HEAD -- hello.txt      <span class="c"># changed your mind: put it back</span>
+git checkout -b rescue                     <span class="c"># made commits while detached? run this BEFORE leaving to keep them</span>
+git reflog                               <span class="c"># forgot? find the hash here, then: git checkout -b rescue HASH</span></code></pre>
+<p><b>Shortcuts:</b> <code>HEAD</code> = now, <code>HEAD~1</code> = one commit before, <code>HEAD~3</code> = three before. <code>git show HEAD~2</code> works without knowing the hash.</p>
+<div class="tw"><table><tr><th>Goal</th><th>Command</th><th>Changes your files?</th></tr>
+<tr><td>Browse history</td><td><code>git log</code></td><td>No</td></tr>
+<tr><td>Inspect one commit</td><td><code>git show HASH</code></td><td>No</td></tr>
+<tr><td>Visit the past</td><td><code>git checkout HASH</code></td><td>Yes, until you switch back</td></tr>
+<tr><td>Get one old file</td><td><code>git checkout HASH -- FILE</code></td><td>One file</td></tr>
+<tr><td>Cancel a bad commit safely</td><td><code>git revert HASH</code></td><td>New commit</td></tr>
+<tr><td>Move the branch back</td><td><code>git reset --hard HASH</code></td><td>Yes, dangerous</td></tr></table></div>
+<div class="try"><b>Try it:</b> make 3 commits, run <code>git log --oneline</code>, visit the first with <code>git checkout HASH</code>, check your file, then <code>git checkout main</code>.</div></section>
+
+<section id="m16"><h2><small>Module 16</small>Git Reset: Soft, Mixed &amp; Hard</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Moving your branch back to an earlier commit.</span></div><div><span class="tl">Why</span><span>You can undo local commits you do not want.</span></div><div><span class="tl">How</span><span><code>--soft</code> keeps changes staged, <code>--mixed</code> keeps them unstaged, <code>--hard</code> deletes them.</span></div></div>
+<div class="tw"><table><tr><th>Mode</th><th>Branch</th><th>Staging</th><th>Working dir</th></tr><tr><td><code>--soft</code></td><td>moves</td><td>kept (staged)</td><td>kept</td></tr><tr><td><code>--mixed</code> (default)</td><td>moves</td><td>reset (unstaged)</td><td>kept</td></tr><tr><td><code>--hard</code></td><td>moves</td><td>reset</td><td><b>lost</b></td></tr></table></div>
+<pre><code>git reset --soft HEAD~1    <span class="c"># undo commit, keep staged</span>
+git reset HEAD~1           <span class="c"># undo commit, keep unstaged</span>
+git reset --hard HEAD~1    <span class="c"># undo commit AND discard changes</span>
+git reset --hard a1b2c3d   <span class="c"># jump to a commit</span></code></pre><div class="tw"><table><tr><th>Part of <code>git reset --hard HEAD~1</code></th><th>Plain meaning</th></tr><tr><td><code>reset</code></td><td>Action: move the current branch pointer.</td></tr><tr><td><code>--hard</code></td><td>Also overwrite staging AND files. This is why it is dangerous.</td></tr><tr><td><code>HEAD~1</code></td><td>Target: one commit before where I am now.</td></tr></table></div>
+<div class="warn">⚠️ <code>--hard</code> permanently deletes uncommitted work.</div>
+<p>Recover: <code>git reflog</code> then <code>git reset --hard HASH</code>.</p>
+<div class="tw"><table><tr><th>Command</th><th>Effect</th><th>Safe on pushed branches?</th></tr><tr><td><code>git reset</code></td><td>Rewrites history</td><td>❌ No</td></tr><tr><td><code>git revert HASH</code></td><td>New commit that undoes</td><td>✅ Yes</td></tr></table></div></section>
+
+<section id="m17"><h2><small>Module 17</small>Git Rebase</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>Replaying your commits on top of another branch.</span></div><div><span class="tl">Why</span><span>It gives a clean, straight history.</span></div><div><span class="tl">How</span><span><code>git rebase main</code> on your own branch only, never on shared ones.</span></div></div>
+<div class="flow">Before: main A─B─C            After: main A─B─C
+              \                                 \
+  feature      D─E                    feature     D'─E'</div>
+<pre><code>git checkout feature
+git rebase main            <span class="c"># replay on top of main</span>
+git rebase --continue      <span class="c"># after fixing a conflict (or --abort)</span>
+git rebase -i HEAD~3       <span class="c"># pick / squash / reword / drop</span></code></pre><div class="tw"><table><tr><th>Part of <code>git rebase -i HEAD~3</code></th><th>Plain meaning</th></tr><tr><td><code>rebase</code></td><td>Action: rewrite and replay commits.</td></tr><tr><td><code>-i</code></td><td>Interactive: opens an editor so you choose pick/squash/reword/drop.</td></tr><tr><td><code>HEAD~3</code></td><td>Work on the last 3 commits.</td></tr></table></div>
+<div class="tw"><table><tr><th></th><th>Merge</th><th>Rebase</th></tr><tr><td>History</td><td>True, with merge commits</td><td>Linear, tidy</td></tr><tr><td>Rewrites commits</td><td>No</td><td>Yes (new hashes)</td></tr><tr><td>Shared branches</td><td>Safe</td><td><b>Never</b></td></tr></table></div></section>
+
+<section id="m18"><h2><small>Module 18</small>Quick Command Cheat Sheet</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>One page with the commands you use most.</span></div><div><span class="tl">Why</span><span>It is a quick lookup when you forget something.</span></div><div><span class="tl">How</span><span>Find your task and copy the command. Use the error table when stuck.</span></div></div>
+<div class="tw"><table><tr><th>Task</th><th>Command</th></tr>
+<tr><td>Identity</td><td><code>git config --global user.name "X"</code></td></tr>
+<tr><td>New / copy repo</td><td><code>git init</code> / <code>git clone URL</code></td></tr>
+<tr><td>Stage / unstage</td><td><code>git add f</code> / <code>git reset HEAD f</code></td></tr>
+<tr><td>Discard edits</td><td><code>git checkout -- f</code></td></tr>
+<tr><td>Commit</td><td><code>git commit -m "msg"</code></td></tr>
+<tr><td>Remote</td><td><code>git remote add origin URL</code></td></tr>
+<tr><td>Up / down</td><td><code>git push</code> / <code>git pull</code> / <code>git fetch</code></td></tr>
+<tr><td>Branch</td><td><code>git checkout -b b</code> / <code>git branch -d b</code></td></tr>
+<tr><td>Merge / rebase</td><td><code>git merge b</code> / <code>git rebase b</code></td></tr>
+<tr><td>Stash</td><td><code>git stash -u</code> / <code>git stash pop</code></td></tr>
+<tr><td>Undo local / pushed</td><td><code>git reset --soft|--mixed|--hard HEAD~1</code> / <code>git revert HASH</code></td></tr>
+<tr><td>Recover</td><td><code>git reflog</code></td></tr></table></div><h3>Common errors and how to fix them</h3>
+<div class="tw"><table><tr><th>Message</th><th>Meaning and fix</th></tr>
+<tr><td><code>fatal: not a git repository</code></td><td>You are outside a repo. <code>cd</code> into the project folder, or run <code>git init</code>.</td></tr>
+<tr><td><code>Please tell me who you are</code></td><td>Set <code>user.name</code> and <code>user.email</code> (Module 3).</td></tr>
+<tr><td><code>remote origin already exists</code></td><td><code>git remote set-url origin NEW_URL</code></td></tr>
+<tr><td><code>Permission denied (publickey)</code></td><td>SSH key not added to GitHub or the agent. Redo Module 5, Option B.</td></tr>
+<tr><td><code>rejected ... non-fast-forward</code></td><td>GitHub has commits you lack. <code>git pull</code>, then <code>git push</code>.</td></tr>
+<tr><td><code>local changes would be overwritten</code></td><td>Commit or <code>git stash -u</code> before switching or pulling.</td></tr>
+<tr><td><code>CONFLICT (content)</code></td><td>Fix the marker lines, <code>git add</code>, then <code>git commit</code>.</td></tr>
+<tr><td><code>HEAD detached at ...</code></td><td>Normal. <code>git checkout main</code> to leave, or <code>git checkout -b name</code> to keep work.</td></tr>
+<tr><td>Committed on <code>main</code> by mistake</td><td><code>git checkout -b feature/x</code> (keeps the commit), then <code>git checkout main</code> and <code>git reset --hard origin/main</code>.</td></tr></table></div></section>
+
+<section id="m19"><h2><small>Master Hands-On</small>Module 19: One Big Project, Start to Finish</h2><div class="three"><b>🧠 In 3 lines</b><div><span class="tl">What</span><span>One project that uses every concept in this guide.</span></div><div><span class="tl">Why</span><span>Real practice teaches more than reading.</span></div><div><span class="tl">How</span><span>Do Parts A to J in order and tick the checklist at the end.</span></div></div><p>You will build and ship <b>Task Tracker</b>, a small to-do web app, the way a real team does. It is <b>one story in 10 parts</b>. Do them <b>in order</b>: each part uses the result of the one before, and by the end every concept in this guide has been used for a real reason.</p><div class="tw"><table><tr><th>Part</th><th>What happens in the story</th><th>Concepts used</th></tr><tr><td>A</td><td>Set up Git and an empty GitHub repo</td><td>Modules 3, 4, 5</td></tr><tr><td>B</td><td>Create the project and push it</td><td>init, add, commit, remote, push, .gitignore</td></tr><tr><td>C</td><td>Build the first page; fix staging mistakes</td><td>staging in/out, reset HEAD, checkout --, diff, add -p, commit -am</td></tr><tr><td>D</td><td>First feature through a Pull Request</td><td>branches, branching strategy, PR, pull</td></tr><tr><td>E</td><td>A teammate joins; you collide</td><td>clone, fetch, pull, merge, conflict</td></tr><tr><td>F</td><td>Urgent bug while mid-feature</td><td>stash, hotfix branch</td></tr><tr><td>G</td><td>You make mistakes and undo them</td><td>amend, reset soft/mixed/hard, reflog, revert</td></tr><tr><td>H</td><td>Look at the past and return</td><td>log, show, detached HEAD, checkout HASH -- file</td></tr><tr><td>I</td><td>Tidy the history</td><td>rebase, interactive squash, force-with-lease</td></tr><tr><td>J</td><td>Release and publish a live site</td><td>tag, release, GitHub Pages</td></tr></table></div><div class="tip"><b>Rule for the whole project:</b> never commit directly to <code>main</code> after Part C. All changes go through a branch and a Pull Request. After each step, run <code>git status</code> and <code>git log --oneline --graph --all</code> to see what happened.</div><h3>Part A: Set up (Modules 3, 4, 5)</h3><pre><code>git --version
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main</code></pre><p>On GitHub: <b>+ → New repository</b> → name <code>task-tracker</code> → <b>Public</b> (needed for free Pages later) → leave README unchecked → <b>Create</b>. Copy the URL (SSH or HTTPS, as set up in Module 5). Below, <code>YOUR_REPO_URL</code> means that URL.</p><h3>Part B: Create the project and push it (Modules 6, 8, 10)</h3><pre><code>mkdir task-tracker &amp;&amp; cd task-tracker
+git init
+cat &gt; README.md &lt;&lt; 'EOF'
+# Task Tracker
+A small to-do web app built to learn Git and GitHub.
+EOF
+cat &gt; .gitignore &lt;&lt; 'EOF'
+node_modules/
+.env
+*.log
+EOF
+git status                        <span class="c"># both files are Untracked (red)</span>
+git add README.md .gitignore
+git commit -m "Add README and .gitignore"
+git remote add origin YOUR_REPO_URL
+git remote -v                     <span class="c"># origin = nickname of your GitHub address</span>
+git push -u origin main</code></pre><p>✅ Refresh GitHub: README appears.</p><h3>Part C: Build the first page and practise staging (Module 6)</h3><pre><code>cat &gt; index.html &lt;&lt; 'EOF'
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;Task Tracker&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Task Tracker&lt;/h1&gt;
+  &lt;ul id="list"&gt;&lt;/ul&gt;
+  &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+cat &gt; style.css &lt;&lt; 'EOF'
+body { font-family: sans-serif; max-width: 480px; margin: 40px auto; }
+li { padding: 6px 0; cursor: pointer; }
+EOF
+cat &gt; app.js &lt;&lt; 'EOF'
+// Task Tracker app
+const tasks = [];
+const list = document.getElementById("list");
+
+function render() {
+  list.innerHTML = "";
+  tasks.forEach(t =&gt; {
+    const li = document.createElement("li");
+    li.textContent = t.title;
+    list.appendChild(li);
+  });
+}
+
+function addTask(title) {
+  tasks.push({ title: title, done: false });
+  render();
+}
+
+addTask("Learn Git");
+addTask("Push to GitHub");
+EOF
+echo "my private scribbles" &gt; scratch.txt</code></pre><h3>C1. Working directory → Staging, then back out</h3><pre><code>git status                        <span class="c"># 4 untracked files</span>
+git add .                         <span class="c"># oops: this also staged scratch.txt</span>
+git status                        <span class="c"># scratch.txt is green (staged) by mistake</span>
+git reset HEAD scratch.txt  <span class="c"># staging → working dir; file kept</span>
+git status                        <span class="c"># scratch.txt is red/untracked again</span>
+git commit -m "Add basic page, styles and script"</code></pre><h3>C2. Ignore the junk file</h3><pre><code>echo "scratch.txt" &gt;&gt; .gitignore
+git status                        <span class="c"># scratch.txt vanished; .gitignore is modified</span>
+git diff                          <span class="c"># shows the one added line (unstaged)</span>
+git add .gitignore
+git diff --staged                 <span class="c"># what will be committed</span>
+git commit -m "Ignore scratch.txt"</code></pre><h3>C3. Discard a bad edit</h3><pre><code>echo "garbage" &gt;&gt; style.css
+git diff                          <span class="c"># see the garbage</span>
+git checkout -- style.css             <span class="c"># discard it (no undo!)</span>
+git status                        <span class="c"># clean</span></code></pre><h3>C4. Stage only part of a file with add -p</h3><pre><code>sed -i '1s/.*/\/\/ Task Tracker app (v0.1)/' app.js
+echo 'addTask("Deploy with Pages");' &gt;&gt; app.js
+git add -p app.js                 <span class="c"># chunk 1 (comment): type y   chunk 2 (new task): type n</span>
+git diff --staged                 <span class="c"># only the comment change is staged</span>
+git commit -m "Add version comment"
+git commit -am "Add deploy task"  <span class="c"># -a stages the remaining tracked change</span>
+git log --oneline
+git push</code></pre><h3>Part D: First feature through a Pull Request (Modules 11, 12, 8, 9)</h3><p>Strategy: <b>GitHub Flow</b>. One short-lived branch per feature, then a Pull Request.</p><pre><code>git checkout -b feature/mark-done
+sed -i 's|    li.textContent = t.title;|    li.textContent = t.title;\n    li.onclick = () =&gt; { t.done = !t.done; render(); };\n    if (t.done) li.className = "done";|' app.js
+echo ".done { text-decoration: line-through; color: gray; }" &gt;&gt; style.css
+git diff                          <span class="c"># review before committing</span>
+git commit -am "Click a task to mark it done"
+git push -u origin feature/mark-done</code></pre><p>On GitHub: <b>Compare &amp; pull request → Create pull request → Merge pull request</b> (choose a normal merge commit) <b>→ Delete branch</b>. Then bring it down:</p><pre><code>git checkout main
+git pull                          <span class="c"># main now has the feature</span>
+git branch -d feature/mark-done   <span class="c"># delete the local copy</span>
+git branch -a                     <span class="c"># list local + remote branches</span></code></pre><h3>Part E: A teammate joins, and you collide (Modules 7, 9, 13)</h3><h3>E1. You start a change but do not push yet</h3><pre><code>git checkout -b feature/my-title
+sed -i 's|&lt;h1&gt;Task Tracker&lt;/h1&gt;|&lt;h1&gt;My Task Tracker&lt;/h1&gt;|' index.html
+git commit -am "Rename heading to My Task Tracker"</code></pre><h3>E2. Teammate (open a second Git Bash window)</h3><pre><code>cd ..
+git clone YOUR_REPO_URL task-tracker-teammate     <span class="c"># full copy; origin is set automatically</span>
+cd task-tracker-teammate
+git config user.name "Teammate"                   <span class="c"># --local: only for this repo</span>
+git config user.email "teammate@example.com"
+git checkout -b feature/team-title
+sed -i 's|&lt;h1&gt;Task Tracker&lt;/h1&gt;|&lt;h1&gt;Team Task Tracker&lt;/h1&gt;|' index.html
+git commit -am "Rename heading to Team Task Tracker"
+git push -u origin feature/team-title</code></pre><p>On GitHub, open and <b>merge</b> the teammate's Pull Request. You and the teammate changed the <b>same line</b>.</p><h3>E3. Back in your window: fetch, look, pull, merge</h3><pre><code>cd ../task-tracker
+git fetch                              <span class="c"># download only, files untouched</span>
+git log --oneline main..origin/main    <span class="c"># what is new on GitHub?</span>
+git diff main origin/main              <span class="c"># the exact changes</span>
+git checkout main
+git pull                               <span class="c"># main is updated</span>
+git checkout feature/my-title
+git merge main                         <span class="c"># CONFLICT in index.html</span>
+git status                             <span class="c"># "both modified: index.html"</span></code></pre><p>Open <code>index.html</code>. Replace the marker block with one final line, e.g. <code>&lt;h1&gt;My Team Task Tracker&lt;/h1&gt;</code>, and delete the lines <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</p><pre><code>git add index.html
+git commit --no-edit                   <span class="c"># finishes the merge</span>
+git push -u origin feature/my-title</code></pre><p>GitHub: create the PR, merge it, delete the branch. Then <code>git checkout main &amp;&amp; git pull &amp;&amp; git branch -d feature/my-title</code>.</p><h3>Part F: Urgent bug while you are mid-feature (Module 14)</h3><pre><code>git checkout -b feature/clear-done
+cat &gt;&gt; app.js &lt;&lt; 'EOF'
+
+function clearDone() {
+  for (let i = tasks.length - 1; i &gt;= 0; i--) {
+    if (tasks[i].done) tasks.splice(i, 1);
+  }
+  render();
+}
+EOF
+echo "idea: add a Clear button" &gt; clear-notes.txt
+git status                             <span class="c"># 1 modified + 1 untracked: unfinished work</span>
+git stash push -u -m "wip clearDone"   <span class="c"># shelve both</span>
+git status                             <span class="c"># clean</span>
+git stash list</code></pre><p><b>Boss:</b> "The page title needs fixing now!" Use a hotfix branch:</p><pre><code>git checkout main
+git checkout -b hotfix/page-title
+sed -i 's#&lt;title&gt;Task Tracker&lt;/title&gt;#&lt;title&gt;Task Tracker - Learn Git&lt;/title&gt;#' index.html
+git commit -am "Fix page title"
+git push -u origin hotfix/page-title   <span class="c"># merge the PR on GitHub</span>
+git checkout main
+git pull
+git branch -d hotfix/page-title
+git checkout feature/clear-done
+git stash pop                          <span class="c"># your unfinished work is back</span>
+git stash list                         <span class="c"># empty</span></code></pre><h3>Part G: Make mistakes and undo them (Module 16)</h3><p>You are on <code>feature/clear-done</code>. Each step is a realistic slip-up.</p><h3>G1. Typo in the commit message → amend</h3><pre><code>git add app.js
+git commit -m "Add clearDone fucntion"
+git commit --amend -m "Add clearDone function"
+rm clear-notes.txt</code></pre><h3>G2. Two unrelated changes in one commit → mixed reset</h3><pre><code>sed -i 's|  &lt;script src="app.js"&gt;&lt;/script&gt;|  &lt;button onclick="clearDone()"&gt;Clear done&lt;/button&gt;\n  &lt;script src="app.js"&gt;&lt;/script&gt;|' index.html
+echo "button { padding: 6px 12px; }" &gt;&gt; style.css
+git commit -am "Add button and styles"
+git reset HEAD~1                       <span class="c"># commit undone, both files unstaged</span>
+git status
+git add index.html &amp;&amp; git commit -m "Add Clear done button"
+git add style.css  &amp;&amp; git commit -m "Style buttons"</code></pre><h3>G3. Bad commit message → soft reset</h3><pre><code>sed -i 's|&lt;/body&gt;|  &lt;footer&gt;Built with Git&lt;/footer&gt;\n&lt;/body&gt;|' index.html
+git commit -am "stuff"
+git reset --soft HEAD~1                <span class="c"># commit undone, change still STAGED</span>
+git status
+git commit -m "Add footer"</code></pre><h3>G4. Bad experiment → hard reset, then rescue with reflog</h3><pre><code>echo "body { background: hotpink; }" &gt;&gt; style.css
+git commit -am "Experiment: hotpink"
+git reset --hard HEAD~1                <span class="c"># commit AND change are gone</span>
+git reflog                             <span class="c"># find the hash next to "Experiment: hotpink"</span>
+git reset --hard HASH_FROM_REFLOG      <span class="c"># it is back!</span>
+git reset --hard HEAD~1                <span class="c"># now drop it on purpose</span></code></pre><h3>G5. Bad commit already pushed → revert (safe for shared history)</h3><pre><code>git push -u origin feature/clear-done
+echo "tasks.length = 0;" &gt;&gt; app.js
+git commit -am "Quick tweak"
+git push
+git revert --no-edit HEAD              <span class="c"># new commit that undoes the tweak</span>
+git push</code></pre><h3>Part H: Look at the past and come back (Module 15)</h3><pre><code>git log --oneline                      <span class="c"># pick a hash a few commits back</span>
+git show HEAD~2 --stat                 <span class="c"># which files that commit touched</span>
+git diff HEAD~4 HEAD --stat            <span class="c"># now vs 4 commits ago</span>
+git checkout HEAD~4             <span class="c"># visit the past (detached HEAD)</span>
+cat index.html                         <span class="c"># the page as it was then</span>
+git checkout feature/clear-done          <span class="c"># back to the present</span>
+git checkout HEAD~4 -- style.css  <span class="c"># grab ONE old file</span>
+git diff --staged                               <span class="c"># the old file is now staged</span>
+git checkout HEAD -- style.css                  <span class="c"># put the newest version back</span></code></pre><h3>Part I: Tidy the history with rebase (Module 17)</h3><pre><code>git checkout main
+git pull
+git checkout feature/clear-done
+git rebase main                        <span class="c"># replay your commits on top of the latest main</span>
+git rebase -i main                     <span class="c"># editor opens</span></code></pre><p>In the editor keep the first line as <code>pick</code> and change every other <code>pick</code> to <code>squash</code>. Save and close. In the next editor, write one message: <code>Add Clear done feature</code>. Save and close.</p><pre><code>git log --oneline                      <span class="c"># your 6 messy commits are now 1</span>
+git push --force-with-lease            <span class="c"># history was rewritten; safe on YOUR OWN branch only</span></code></pre><p>GitHub: create the PR, merge it (normal merge commit), delete the branch.</p><h3>Part J: Release and go live (Modules 8, 9)</h3><pre><code>git checkout main
+git pull
+git branch -d feature/clear-done
+git fetch --prune                      <span class="c"># forget deleted remote branches</span>
+git tag -a v1.0 -m "First release"
+git push origin v1.0
+git log --oneline --graph --all        <span class="c"># admire the whole story</span></code></pre><p><b>Publish the site:</b> GitHub repo → <b>Settings → Pages → Source: Deploy from a branch → main / (root) → Save</b>. After about a minute your app is live at <code>https://USERNAME.github.io/task-tracker/</code>. Then <b>Releases → Draft a new release → choose tag v1.0 → Publish</b>.</p><h3>Final checklist</h3><ul><li>☐ Live site works; click a task to cross it out; "Clear done" removes it</li><li>☐ 5 merged Pull Requests (mark-done, team-title, my-title, hotfix, clear-done)</li><li>☐ Conflict resolved by hand</li><li>☐ Stash used and popped</li><li>☐ amend, soft, mixed, hard reset, reflog rescue and revert all done</li><li>☐ Detached HEAD visited and left</li><li>☐ Interactive rebase squashed 6 commits into 1</li><li>☐ Tag v1.0 and a GitHub Release published</li></ul><div class="tip">🎉 You just ran the full professional Git workflow. I have not run these exact commands end to end on your machine, so if one step behaves differently, run <code>git status</code> and compare it with the comment on that line.</div></section>
+</main>
+<button id="tt" aria-label="Back to top" onclick="scrollTo({top:0})">↑</button>
+<script>
+document.querySelectorAll('pre').forEach(p=>{const b=document.createElement('button');b.className='cp';b.textContent='Copy';b.onclick=()=>{try{navigator.clipboard.writeText(p.innerText).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1200)})}catch(e){}};p.appendChild(b)});
+
+const D=[['f','git add FILE','wd','st','Copies the current version of the file into the staging area. The file in your working directory is untouched.'],
+['f','git commit -m "msg"','st','lr','Turns everything in staging into a permanent snapshot in local history. Staging becomes empty.'],
+['f','git commit -am "msg"','wd','lr','Shortcut: stages all tracked modified files and commits in one step. Skips new files.'],
+['f','git push','lr','rr','Uploads your new local commits to GitHub. Only commits travel, never uncommitted edits.'],
+['f','git stash -u','wd','sh','Shelves uncommitted edits (and new files with -u). Working directory goes back to the last commit.'],
+['b','git reset HEAD FILE','st','wd','Unstages: removes the file from the cart. Your edits stay in the working directory.'],
+['b','git checkout -- FILE','st','wd','DANGER: overwrites the working file with the staged copy. Your unstaged edits are lost.',1],
+['b','git reset --soft HEAD~1','lr','st','Undoes the last commit but keeps all its changes STAGED, ready to recommit.'],
+['b','git reset --mixed HEAD~1','lr','wd','Undoes the last commit and unstages the changes. Files keep their edits in the working directory.'],
+['b','git reset --hard HEAD~1','lr','wd','DANGER: undoes the last commit AND wipes the changes from staging and working directory. Recover with git reflog.',1],
+['b','git stash pop','sh','wd','Brings the shelved edits back into the working directory and removes them from the stash.'],
+['b','git fetch','rr','lr','Downloads new commits into origin/main only. Your branch and files do not change. Safe look-before-you-leap.'],
+['b','git pull','rr','lr,wd','Step 1 (fetch): new commits are downloaded into your Local Repository. Step 2 (merge): your branch moves forward and the files in your Working Directory are updated to match.'],
+['b','git checkout BRANCH','lr','wd','Rewrites your working directory to match the target branch (commit or stash edits first).'],
+['b','git clone URL','rr','lr,wd','Step 1: downloads the full history into your Local Repository. Step 2: checks out the latest files into your Working Directory so you can see and edit them. Staging starts empty (clean).']];
+const N={wd:'Working Directory',st:'Staging Area',lr:'Local Repository',rr:'Remote',sh:'Stash'};
+D.forEach(d=>{const b=document.createElement('button');b.className='cb'+(d[5]?' d':'');b.textContent=d[1];
+b.onclick=()=>{document.querySelectorAll('.cb').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+document.querySelectorAll('.box').forEach(x=>x.classList.remove('from','to'));
+document.getElementById('b-'+d[2]).classList.add('from');d[3].split(',').forEach(t=>document.getElementById('b-'+t).classList.add('to'));
+document.querySelectorAll('.badge').forEach(x=>x.remove());
+const add=(id,t,c)=>{const e=document.createElement('span');e.className='badge '+c;e.textContent=t;document.getElementById('b-'+id).appendChild(e)};
+const T=d[3].split(',');add(d[2],'FROM','bf');T.forEach((t,i)=>add(t,T.length>1?'TO · step '+(i+1):'TO','bt'));
+document.getElementById('info').innerHTML='<div class="cmd">'+d[1]+'</div><div class="route"><span class="chip f">'+N[d[2]]+'</span> ➜ '+T.map(t=>'<span class="chip t">'+N[t]+'</span>').join(' ➜ ')+'</div>'+d[4]+(T.length>1?'<div class="why">💡 Two blue boxes because this command does two jobs in order: step 1, then step 2.</div>':'')};
+document.getElementById(d[0]=='f'?'fw':'bw').appendChild(b)});
+
+(function(){
+const R=document.documentElement,$=q=>document.querySelector(q),$$=q=>[...document.querySelectorAll(q)];
+const nav=$('nav'),secs=$$('main section');
+let done={};try{done=JSON.parse(localStorage.getItem('gitdone')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('gitdone',JSON.stringify(done))}catch(e){}};
+nav.querySelector('b').insertAdjacentHTML('afterend','<input id="q" placeholder="Search modules   ( / )" aria-label="Search modules"><div class="pg"><i></i></div><div id="pgt"></div><div class="tools"><button id="th">🌗 Theme</button><button id="pr">🖨️ Print / PDF</button></div>');
+document.body.insertAdjacentHTML('beforeend','<button id="menu" aria-label="Menu">☰</button><div id="bar"></div>');
+function prog(){const n=secs.filter(s=>done[s.id]).length;$('.pg i').style.width=(n/secs.length*100)+'%';$('#pgt').textContent=n+' of '+secs.length+' modules completed';
+$$('nav > a').forEach(a=>a.classList.toggle('done',!!done[a.getAttribute('href').slice(1)]));
+$$('.done-btn').forEach(b=>{const on=!!done[b.dataset.id];b.classList.toggle('on',on);b.textContent=on?'✓ Completed':'Mark this module complete'})}
+secs.forEach(s=>{s.dataset.n=s.id.slice(1);s.classList.add('rv');const b=document.createElement('button');b.className='done-btn';b.dataset.id=s.id;b.onclick=()=>{done[s.id]=!done[s.id];save();prog()};s.appendChild(b)});
+prog();
+// reveal + active link
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}}),{threshold:.04});
+secs.forEach(s=>ro.observe(s));
+const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){$$('nav > a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')=='#'+e.target.id))}}),{rootMargin:'-25% 0px -65% 0px'});
+secs.forEach(s=>ao.observe(s));
+// hero chips
+const cmds=$$('pre code').reduce((n,c)=>n+(c.textContent.match(/^\s*git /gm)||[]).length,0);
+$('.hero').insertAdjacentHTML('beforeend','<div class="chips"><span>📚 '+secs.length+' modules</span><span>⌨️ '+cmds+'+ commands</span><span>🧪 1 real project</span><span>🌗 light / dark</span></div><a class="cta" href="#m1">Start Module 1 →</a><a class="cta ghost" href="#m19">Jump to the project</a>');
+// code blocks: window bar + highlight + safe copy
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+$$('pre').forEach(p=>{const code=p.querySelector('code');
+[...code.childNodes].forEach(n=>{if(n.nodeType==3&&n.textContent.trim()){const sp=document.createElement('span');
+sp.innerHTML=esc(n.textContent).replace(/(^|\n)([ \t]*)(git)([ \t]+[a-z][a-z-]*)?/g,(m,a,b,c,d)=>a+b+'<span class="k">git</span>'+(d?'<span class="sc">'+d+'</span>':'')).replace(/([ \t])(--?[a-zA-Z][\w-]*)/g,'$1<span class="op">$2</span>');n.replaceWith(sp)}});
+const w=document.createElement('div');w.className='codebox';w.innerHTML='<div class="cbar"><i></i><i></i><i></i><em>Git Bash</em></div>';p.parentNode.insertBefore(w,p);w.appendChild(p);
+const b=p.querySelector('.cp');if(b)b.onclick=()=>{const t=code.innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();try{document.execCommand('copy')}catch(e){}x.remove()});b.textContent='Copied ✓';setTimeout(()=>b.textContent='Copy',1400)}});
+// controls
+$('#th').onclick=()=>{const dk=matchMedia('(prefers-color-scheme: dark)').matches;const cur=R.dataset.theme||(dk?'dark':'light');R.dataset.theme=cur=='dark'?'light':'dark'};
+$('#pr').onclick=()=>print();
+$('#q').oninput=e=>{const v=e.target.value.toLowerCase();$$('nav > a').forEach(a=>a.style.display=a.textContent.toLowerCase().includes(v)?'':'none')};
+addEventListener('keydown',e=>{if(e.key=='/'&&document.activeElement.tagName!='INPUT'){e.preventDefault();$('#q').focus()}});
+$('#menu').onclick=()=>nav.classList.toggle('open');
+$$('nav > a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+const bar=$('#bar');addEventListener('scroll',()=>{bar.style.width=(scrollY/Math.max(1,document.body.scrollHeight-innerHeight)*100)+'%'},{passive:true});
+})();
+
+(function(){
+const $=q=>document.querySelector(q),$$=q=>[...document.querySelectorAll(q)];
+const E=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const secs=$$('main section'),links=()=>$$('nav > a');
+// sidebar: group labels + number badges
+const G={1:'Foundations',6:'Daily workflow',11:'Branching & merging',15:'Undo & history',18:'Reference & project'};
+links().forEach(a=>{const m=a.textContent.match(/^(★ )?(\d+) · (.*)$/);if(m){a.innerHTML='<span class="nb">'+(m[1]?'★':m[2])+'</span>'+m[3]}
+const k=+a.getAttribute('href').slice(2);if(G[k])a.insertAdjacentHTML('beforebegin','<div class="grp">'+G[k]+'</div>')});
+const q0=$('#q');if(q0)q0.addEventListener('input',e=>$$('.grp').forEach(g=>g.style.display=e.target.value?'none':''));
+// section meta + prev/next
+const titles=secs.map(s=>{const h=s.querySelector('h2');return h.textContent.replace(h.querySelector('small').textContent,'').trim()});
+secs.forEach((s,i)=>{const h=s.querySelector('h2');
+const w=s.textContent.split(/\s+/).length,c=(s.textContent.match(/^\s*git /gm)||[]).length;
+h.insertAdjacentHTML('afterend','<div class="meta"><span>⏱ ~'+Math.max(2,Math.round(w/200+c*.2))+' min read</span><span>⌨️ '+c+' commands</span></div>');
+const p=i?'<a href="#'+secs[i-1].id+'">← '+E(titles[i-1])+'</a>':'<span></span>',n=i<secs.length-1?'<a href="#'+secs[i+1].id+'">'+E(titles[i+1])+' →</a>':'<span></span>';
+const d=document.createElement('div');d.className='pn';d.innerHTML=p+n;s.insertBefore(d,s.querySelector('.done-btn'))});
+// learning path cards
+const P=[['🧱','Foundations','Modules 1–5',1,5],['🔁','Daily workflow','Modules 6–10',6,10],['🌿','Branching & merging','Modules 11–14',11,14],['⏪','Undo & history','Modules 15–17',15,17],['🚀','Real project','Modules 18–19',18,19]];
+$('.hero').insertAdjacentHTML('afterend','<div class="path">'+P.map(c=>'<a class="pc" href="#m'+c[3]+'" data-a="'+c[3]+'" data-b="'+c[4]+'"><span>'+c[0]+'</span><b>'+c[1]+'</b><small>'+c[2]+'</small><u></u></a>').join('')+'</div>');
+function cards(){let d={};try{d=JSON.parse(localStorage.getItem('gitdone')||'{}')}catch(e){}
+$$('.pc').forEach(c=>{let n=0;const a=+c.dataset.a,b=+c.dataset.b;for(let i=a;i<=b;i++)if(d['m'+i])n++;c.querySelector('u').textContent=n+' / '+(b-a+1)+' done'})}
+cards();document.addEventListener('click',e=>{if(e.target.closest('.done-btn'))setTimeout(cards,0)});
+// hero terminal
+$('.hero').insertAdjacentHTML('afterbegin','<div class="term"><div class="cbar"><i></i><i></i><i></i><em>Git Bash</em></div><pre id="ty"></pre></div>');
+const L=[['$ git init'],['Initialized empty Git repository in .git/',0],['$ git add .'],['$ git commit -m "first commit"'],['[main (root-commit) a1b2c3d] first commit',0],['$ git push -u origin main'],["branch 'main' set up to track 'origin/main'.",0]];
+const F=x=>x[0]=='$'?'<span class="p">$</span>'+E(x.slice(1)):E(x),ty=$('#ty');
+let li=0,ci=0,out='';
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){ty.innerHTML=L.map(l=>l[1]===0?'<span class="o">'+E(l[0])+'</span>':F(l[0])).join('\n')}
+else(function tick(){if(li>=L.length){setTimeout(()=>{li=0;ci=0;out='';tick()},3500);return}
+const t=L[li][0],typed=L[li][1]!==0;
+if(typed){ci++;ty.innerHTML=out+F(t.slice(0,ci))+'<span class="cur"></span>';if(ci>=t.length){out+=F(t)+'\n';li++;ci=0;setTimeout(tick,450)}else setTimeout(tick,45)}
+else{out+='<span class="o">'+E(t)+'</span>\n';ty.innerHTML=out+'<span class="cur"></span>';li++;setTimeout(tick,350)}})();
+// keyboard: j / k = next / previous module
+addEventListener('keydown',e=>{if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)||e.ctrlKey||e.metaKey)return;
+const i=links().findIndex(a=>a.classList.contains('active'));
+if(e.key=='j'&&links()[i+1])location.hash=links()[i+1].getAttribute('href');
+if(e.key=='k'&&i>0)location.hash=links()[i-1].getAttribute('href')});
+$('main').insertAdjacentHTML('beforeend','<div class="ft">Press <b>/</b> to search · <b>j</b> / <b>k</b> next / previous module · Happy committing 🌿</div>');
+})();
+</script></body></html>
